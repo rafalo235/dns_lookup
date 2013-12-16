@@ -12,6 +12,8 @@
 extern "C" {
 #endif
     
+    #include <stdint.h>
+    
     namespace com_olejniczak_utils {
         typedef struct {
             uint16_t id;
