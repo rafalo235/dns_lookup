@@ -31,6 +31,17 @@ extern "C" {
             uint16_t arcount;
         } dns_header;
         
+        typedef struct {
+            char* name;
+            uint16_t length;
+        } internal_name;
+        
+        typedef struct {
+            internal_name name;
+            uint16_t type;
+            uint16_t net_class;
+        } dns_question;
+        
         int convert_addr_to_int(const char*);
     }
 

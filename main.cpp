@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "DNSServer.h"
+#include "Request.h"
 
 using namespace std;
 
@@ -18,8 +19,8 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     DNSServer serv("127.0.0.1");
-//    printf("%d", '9');
-////    s >> 
+    Request request;
+
     return 0;
 }
 
