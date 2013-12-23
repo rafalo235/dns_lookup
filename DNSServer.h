@@ -12,12 +12,16 @@ class DNSServer {
 public:
     DNSServer();
     DNSServer(int address);
-    DNSServer(const char* address);
+    DNSServer(char* address);
     DNSServer(const DNSServer& orig);
+    void connect();
+    void disconnect();
     virtual ~DNSServer();
     int translate(const char* );
 private:
     int _address;
+    char* _dot_addr;
+    int _sockfd;
 };
 
 #endif	/* DNSSERVER_H */

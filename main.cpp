@@ -18,8 +18,13 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    DNSServer serv("127.0.0.1");
-    Request request;
+    DNSServer serv("10.126.32.136");
+    serv.connect();
+    serv.translate("ekstraklasa.tv");
+    serv.disconnect();
+//    Request request;
+//    request.addQuestion("www.onet.pl", 0x01);
+//    request.addQuestion("www.90minut.pl", 0x01);
 
     return 0;
 }
