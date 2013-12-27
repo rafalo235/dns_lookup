@@ -68,6 +68,10 @@ extern "C" {
             uint16_t net_class;
         } dns_question;
         
+        typedef struct {
+            
+        } dns_response;
+        
         int convert_addr_to_int(const char*);
         int count_dots(const char*);
         void fill_string_length(char* str, int length);

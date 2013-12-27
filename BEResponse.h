@@ -19,7 +19,7 @@ public:
 private:
     com_olejniczak_utils::be_dns_header _header;
     com_olejniczak_utils::dns_question *_questions;
-//    com_olejniczak_utils::
+    
 };
 
 #endif	/* BERESPONSE_H */
