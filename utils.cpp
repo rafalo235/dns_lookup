@@ -20,7 +20,6 @@ int convert_addr_to_int(const char* addr) {
                 r *= 256;
         }
     }
-    
     return r;
 }
 
@@ -45,23 +44,21 @@ void fill_string_length(char* str, int length) {
 }
 
 char* convert_serv_name_to_internal(const char* serv_name, uint16_t *length) {
-    int dots, len, i = 0, counter = 0;
+    int len, i = 0, counter = 0;
     char *int_nam = 0;
     
     /* Memory allocation */
-    dots = count_dots(serv_name);
-    len = strlen(serv_name);
-    i = len - 1;
-    len = len + 3 * dots + 4;
-    *length = (uint16_t) len;
-    int_nam = (char*) calloc(len, sizeof(char));
-    len--;
+    *length = len = strlen(serv_name) + 2;
+    int_nam = (char *) calloc(len, sizeof(char));
+    
+    /* Prepare iterators */
+    i = len - 3;
+    len -= 2;
     
     /* Prepare returned value */
     while ( i >= 0 ) {
         if ( serv_name[i] == '.') {
-            len -= 3 * sizeof(char);
-            fill_string_length(int_nam + len, counter);
+            int_nam[len] = counter;
             len -= sizeof(char);
             i -= sizeof(char);
             counter = 0;
@@ -72,7 +69,7 @@ char* convert_serv_name_to_internal(const char* serv_name, uint16_t *length) {
             counter++;
         }
     }
-    fill_string_length(int_nam, counter);
+    int_nam[0] = counter;
     
     return int_nam;
 }

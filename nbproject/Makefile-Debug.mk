@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/BERequest.o \
+	${OBJECTDIR}/BEResponse.o \
 	${OBJECTDIR}/DNSServer.o \
 	${OBJECTDIR}/Request.o \
 	${OBJECTDIR}/main.o \
@@ -64,6 +66,16 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dns_lookup.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dns_lookup ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/BERequest.o: BERequest.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BERequest.o BERequest.cpp
+
+${OBJECTDIR}/BEResponse.o: BEResponse.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BEResponse.o BEResponse.cpp
 
 ${OBJECTDIR}/DNSServer.o: DNSServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
