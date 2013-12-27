@@ -69,14 +69,20 @@ extern "C" {
         } dns_question;
         
         typedef struct {
-            
-        } dns_response;
+            uint16_t name;
+            uint16_t type;
+            uint16_t net_class;
+            uint32_t ttl;
+            uint16_t length;
+            uint16_t data;
+        } dns_resource_rec;
         
         int convert_addr_to_int(const char*);
         int count_dots(const char*);
         void fill_string_length(char* str, int length);
         char* convert_serv_name_to_internal(const char*, uint16_t *);
         void convert_dots(char *str);
+        void print(char *, int);
     }
 
 #ifdef	__cplusplus

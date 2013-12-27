@@ -84,4 +84,21 @@ void convert_dots(char *str) {
     }
 }
 
+void print(char * buffer, int len) {
+    for (int i = 0 ; i < len ; i++ ) {
+        if ( ( buffer[i] <= 122 && buffer[i] >= 97 )
+                || 
+               ( buffer[i] <= 90 && buffer[i] >= 65 )
+                ||
+               ( buffer[i] <= 57 && buffer[i] >= 48 ) ) {
+            printf("%2c ", buffer[i]);
+        } else {
+            printf("%02x ", buffer[i]);
+        }
+        if( i % 8 == 0) {
+            printf("\n");
+        }
+    }
+}
+
 }

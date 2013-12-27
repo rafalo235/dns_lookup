@@ -19,6 +19,7 @@
 
 #include "DNSServer.h"
 #include "Request.h"
+#include "BEResponse.h"
 
 DNSServer::DNSServer() {
     this->_address = 0;
@@ -62,8 +63,9 @@ void DNSServer::disconnect() {
 
 int DNSServer::translate(const char* addr) {
     Request r;
+    BEResponse be_response;
     char* msg;
-    char buffer[1024];
+    unsigned char buffer[1024];
     struct sockaddr_in dest_addr;
     int dst_addr_len;
     int check = 0;
@@ -71,6 +73,8 @@ int DNSServer::translate(const char* addr) {
     
     r.addQuestion(addr, 0x01);
     msg = r.marshal(&length);
+    
+    memset(buffer, 0, 1024);
     
     /* Prepare send to address */
     dest_addr.sin_family = AF_INET; // host byte order
@@ -99,10 +103,19 @@ int DNSServer::translate(const char* addr) {
                 0,
                 (sockaddr *) &dest_addr,
                 &dst_addr_len);
-    printf("%s", buffer);
     if (check == -1) {
         return 2;
     }
+    
+//    memcpy(be_response.getHeaderRef(),
+//            buffer,
+//            sizeof(com_olejniczak_utils::be_dns_header)
+//         );
+    
+    
+    
+//    com_olejniczak_utils::print(buffer, 1024);
+    
     
     return 0;
 }

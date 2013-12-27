@@ -62,9 +62,6 @@ void Request::addQuestion(const char *name, uint16_t type) {
                 name, 
                 &q.name.length
             );
-//    q.name.name = (char*) calloc(strlen(name), sizeof(char));
-//    memcpy(q.name.name, name, strlen(name));
-//    q.name.length = strlen(name);
     q.type = type;
     q.net_class = 0x0001; // IN - Internet
     this->_header.qdcount++;
