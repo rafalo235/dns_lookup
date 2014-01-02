@@ -84,7 +84,7 @@ void convert_dots(char *str) {
     }
 }
 
-void print(char * buffer, int len) {
+void print(unsigned char * buffer, int len) {
     for (int i = 0 ; i < len ; i++ ) {
         if ( ( buffer[i] <= 122 && buffer[i] >= 97 )
                 || 

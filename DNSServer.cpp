@@ -20,6 +20,7 @@
 #include "DNSServer.h"
 #include "Request.h"
 #include "BEResponse.h"
+#include "Response.h"
 
 DNSServer::DNSServer() {
     this->_address = 0;
@@ -33,6 +34,12 @@ DNSServer::DNSServer(char* address) {
     this->_address = com_olejniczak_utils::convert_addr_to_int(address);
     this->_dot_addr = address;
 //    this->_address *= 256;
+    
+    /* Prepare send to address */
+    this->_dest_addr.sin_family = AF_INET; // host byte order
+    this->_dest_addr.sin_port = htons( DEST_PORT ); // short, network byte order
+    this->_dest_addr.sin_addr.s_addr = inet_addr( this->_dot_addr );
+    memset( &( this->_dest_addr.sin_zero ), '\0', 8 ); // wyzeruj resztę struktury
 }
 
 DNSServer::DNSServer(const DNSServer& orig) {
@@ -61,58 +68,68 @@ void DNSServer::disconnect() {
     close( this->_sockfd );
 }
 
-int DNSServer::translate(const char* addr) {
-    Request r;
-    BEResponse be_response;
+void DNSServer::sendRequest(Request &req) {
     char* msg;
-    unsigned char buffer[1024];
-    struct sockaddr_in dest_addr;
-    int dst_addr_len;
-    int check = 0;
-    int length = 0;
+    int length, check;
     
-    r.addQuestion(addr, 0x01);
-    msg = r.marshal(&length);
-    
-    memset(buffer, 0, 1024);
-    
-    /* Prepare send to address */
-    dest_addr.sin_family = AF_INET; // host byte order
-    dest_addr.sin_port = htons( DEST_PORT ); // short, network byte order
-    dest_addr.sin_addr.s_addr = inet_addr( this->_dot_addr );
-    memset( &( dest_addr.sin_zero ), '\0', 8 ); // wyzeruj resztę struktury
-    
+    msg = req.marshal(&length);
     
     check = sendto( 
             this->_sockfd,
             msg, 
             length, 
             0,
-            (sockaddr *) &dest_addr, 
-            sizeof(dest_addr)
+            (sockaddr *) &this->_dest_addr, 
+            sizeof(this->_dest_addr)
         );
     free(msg);
     if (check == -1) {
-        return 1;
+        return;
     }
+}
+
+Response *DNSServer::receiveResponse() {
+    unsigned char buffer[1024];
+    BEResponse be_response;
+    Response *response;
+    int check, dst_addr_len;
+    struct sockaddr_in dest;
+    
+    memset(buffer, 0, 1024);
+    response = new Response();
     
     check = recvfrom( 
                 this->_sockfd, 
                 buffer, 
                 1024,
                 0,
-                (sockaddr *) &dest_addr,
+                (sockaddr *) &this->_dest_addr,
                 &dst_addr_len);
     if (check == -1) {
-        return 2;
+        return response;
     }
+    com_olejniczak_utils::print(buffer, 1024);
+    
+    return response;
+}
+
+int DNSServer::translate(const char* addr) {
+    
+    Request request;
+    Response *response;
+    int check = 0;
+    int length = 0;
+    
+    request.addQuestion(addr, 0x01);
+    
+    sendRequest(request);
+    response = receiveResponse();
+    
     
 //    memcpy(be_response.getHeaderRef(),
 //            buffer,
 //            sizeof(com_olejniczak_utils::be_dns_header)
 //         );
-    
-    
     
 //    com_olejniczak_utils::print(buffer, 1024);
     

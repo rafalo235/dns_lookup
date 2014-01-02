@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/BEResponse.o \
 	${OBJECTDIR}/DNSServer.o \
 	${OBJECTDIR}/Request.o \
+	${OBJECTDIR}/Response.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utils.o
 
@@ -86,6 +87,11 @@ ${OBJECTDIR}/Request.o: Request.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Request.o Request.cpp
+
+${OBJECTDIR}/Response.o: Response.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Response.o Response.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

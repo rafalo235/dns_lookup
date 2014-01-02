@@ -18,9 +18,9 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    DNSServer serv("10.126.32.136");
+    DNSServer serv("10.230.5.6");
     serv.connect();
-    serv.translate("wykop.pl");
+    serv.translate("");
     serv.disconnect();
 //    Request request;
 //    request.addQuestion("www.onet.pl", 0x01);

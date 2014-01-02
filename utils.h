@@ -82,7 +82,7 @@ extern "C" {
         void fill_string_length(char* str, int length);
         char* convert_serv_name_to_internal(const char*, uint16_t *);
         void convert_dots(char *str);
-        void print(char *, int);
+        void print(unsigned char *, int);
     }
 
 #ifdef	__cplusplus
