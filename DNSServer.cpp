@@ -51,7 +51,20 @@ DNSServer::~DNSServer() {
 
 void DNSServer::connect() {
     struct sockaddr_in my_addr;
-    this->_sockfd = socket(PF_INET, SOCK_DGRAM, 0);
+    this->_sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    char timeout[1024];
+    socklen_t i;
+    memset(timeout, 0, 1024);
+    
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 100000;
+    
+    setsockopt( this->_sockfd,
+                SOL_SOCKET,
+                SO_RCVTIMEO,
+                &tv,
+                sizeof(tv));
     
     my_addr.sin_family = AF_INET; // host byte order
     my_addr.sin_port = htons( 0 ); // short, network byte order
@@ -91,12 +104,15 @@ void DNSServer::sendRequest(Request &req) {
 Response *DNSServer::receiveResponse() {
     unsigned char buffer[1024];
     BEResponse be_response;
+    uint16_t *p1;
+    uint16_t tmp;
     Response *response;
     int check, dst_addr_len;
     struct sockaddr_in dest;
     
     memset(buffer, 0, 1024);
     response = new Response();
+    
     
     check = recvfrom( 
                 this->_sockfd, 
@@ -108,6 +124,27 @@ Response *DNSServer::receiveResponse() {
     if (check == -1) {
         return response;
     }
+    
+//    p1 = (uint16_t*) be_response.getHeaderRef();
+    
+//    memcpy(p1,
+//            buffer,
+//            sizeof(com_olejniczak_utils::be_dns_header));
+//    for(int i = 0 ; 
+//            i < 6  ; 
+//            i++ ) {
+//        tmp = ntohs(
+//                p1[i]
+//                );
+//        p1[i] = tmp;
+//    }
+    
+    memcpy( be_response.getHeaderRef(),
+            buffer,
+            sizeof(com_olejniczak_utils::be_dns_header));
+    com_olejniczak_utils::ntohshorts(
+                be_response.getHeaderRef(),
+                6);
     com_olejniczak_utils::print(buffer, 1024);
     
     return response;

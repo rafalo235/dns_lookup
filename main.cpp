@@ -20,7 +20,7 @@ using namespace std;
 int main(int argc, char** argv) {
     DNSServer serv("10.230.5.6");
     serv.connect();
-    serv.translate("");
+    serv.translate("google.pl");
     serv.disconnect();
 //    Request request;
 //    request.addQuestion("www.onet.pl", 0x01);

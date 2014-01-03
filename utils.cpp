@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <netinet/in.h>
 
 using namespace std;
 
@@ -98,6 +99,14 @@ void print(unsigned char * buffer, int len) {
         if( i % 8 == 0) {
             printf("\n");
         }
+    }
+}
+
+void ntohshorts(void* tab, int count) {
+    uint16_t *ptr = (uint16_t*) tab;
+    
+    for (int i = 0 ; i < count ; i++ ) {
+        ptr[i] = ntohs(ptr[i]);
     }
 }
 

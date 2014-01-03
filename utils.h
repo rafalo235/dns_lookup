@@ -83,6 +83,7 @@ extern "C" {
         char* convert_serv_name_to_internal(const char*, uint16_t *);
         void convert_dots(char *str);
         void print(unsigned char *, int);
+        void ntohshorts(void *, int);
     }
 
 #ifdef	__cplusplus
